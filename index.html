@@ -3,283 +3,718 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tu Homenaje — Un lugar donde su memoria vive para siempre</title>
+<title>Tu Homenaje — Un lugar donde su memoria vive</title>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#1a1a2e;--card:#16213e;--gold:#d4a574;--gold-light:#e8c9a0;--text:#e9ecf1;--muted:#9aa3b2;--line:#2a2a4a}
-html{scroll-behavior:smooth}
-body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
-h1,h2,h3{font-family:Georgia,'Times New Roman',serif;font-weight:400;color:var(--gold)}
-h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.2}
-h2{font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.5rem}
-h3{font-size:1.2rem;color:var(--gold-light)}
-.container{max-width:1100px;margin:0 auto;padding:0 1.5rem}
-section{padding:5rem 0}
-.btn{display:inline-block;padding:.9rem 2rem;border-radius:8px;font-size:1rem;font-weight:600;text-decoration:none;transition:all .25s;cursor:pointer;border:none}
-.btn-primary{background:var(--gold);color:var(--bg)}
-.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
-.btn-outline{background:transparent;color:var(--gold);border:2px solid var(--gold)}
-.btn-outline:hover{background:var(--gold);color:var(--bg)}
+:root{
+  --bg:#0a0a0f;
+  --surface:#111118;
+  --accent:#c8a882;
+  --accent-glow:rgba(200,168,130,.12);
+  --text:#e8e4dd;
+  --muted:#8a8580;
+  --line:rgba(200,168,130,.08);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-weight:400}
+.serif{font-family:Georgia,'Times New Roman',serif}
 
-/* Hero */
-.hero{min-height:90vh;display:flex;align-items:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,165,116,.08) 0%,transparent 70%)}
-.hero-content{position:relative;z-index:1;text-align:center}
-.hero h1{margin-bottom:1.2rem}
-.hero p{font-size:1.3rem;color:var(--muted);max-width:600px;margin:0 auto 2.5rem}
-.hero-candle{font-size:4rem;margin-bottom:2rem;animation:flicker 3s infinite}
-@keyframes flicker{0%,100%{opacity:1}50%{opacity:.7}30%,70%{opacity:.85}}
-.hero-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+/* Intersection Observer animations */
+.fade-up{opacity:0;transform:translateY(40px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.fade-up.visible{opacity:1;transform:translateY(0)}
 
-/* Secciones */
-.what-is{background:var(--card)}
-.what-is-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:3rem}
-.what-is-card{background:var(--bg);padding:2rem;border-radius:12px;border:1px solid var(--line)}
-.what-is-card .icon{font-size:2.5rem;margin-bottom:1rem}
-.what-is-card h3{margin-bottom:.8rem}
+/* ---- HERO ---- */
+.hero{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  position:relative;
+  padding:8rem 2rem;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:100%;
+  background:radial-gradient(ellipse 60% 50% at 50% 30%,var(--accent-glow),transparent);
+  pointer-events:none;
+}
+.hero-inner{max-width:1200px;margin:0 auto;width:100%;position:relative;z-index:1}
+.hero h1{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(3.5rem,8vw,7rem);
+  line-height:1.05;
+  color:var(--text);
+  letter-spacing:-.02em;
+  margin-bottom:2rem;
+  font-weight:400;
+}
+.hero .subtitle{
+  font-size:clamp(1rem,2vw,1.25rem);
+  color:var(--muted);
+  max-width:540px;
+  line-height:1.7;
+  margin-bottom:3rem;
+}
+.hero-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:.6rem;
+  padding:1rem 2.2rem;
+  background:var(--accent);
+  color:#0a0a0f;
+  text-decoration:none;
+  font-weight:600;
+  font-size:.95rem;
+  letter-spacing:.01em;
+  transition:all .3s;
+  border-radius:2px;
+}
+.hero-cta:hover{background:#d4b892;transform:translateY(-1px)}
+.hero-cta .arrow{font-size:1.2rem;transition:transform .3s}
+.hero-cta:hover .arrow{transform:translateX(4px)}
+.hero-line{position:absolute;bottom:4rem;left:0;right:0;height:1px;background:var(--line);max-width:1200px;margin:0 auto}
 
-/* Features */
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;margin-top:3rem}
-.feature{text-align:center;padding:2rem}
-.feature .icon{font-size:3rem;margin-bottom:1rem;display:block}
-.feature h3{font-size:1.1rem;margin-bottom:.5rem}
-.feature p{color:var(--muted);font-size:.95rem}
+@media(max-width:768px){
+  .hero{padding:5rem 1.5rem;min-height:90vh}
+  .hero h1{font-size:clamp(2.8rem,10vw,4rem)}
+}
 
-/* Demo preview */
-.demo-preview{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-top:3rem}
-.demo-header{background:var(--bg);padding:1.2rem 2rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid var(--line)}
-.demo-dot{width:12px;height:12px;border-radius:50%}
-.demo-dot:nth-child(1){background:#ff5f56}.demo-dot:nth-child(2){background:#ffbd2e}.demo-dot:nth-child(3){background:#27c93f}
-.demo-url{color:var(--muted);font-size:.85rem;margin-left:auto}
-.demo-body{padding:3rem 2rem;text-align:center}
-.demo-name{font-family:Georgia,serif;font-size:2.5rem;color:var(--gold);margin-bottom:.5rem}
-.demo-dates{color:var(--muted);font-size:1.1rem;margin-bottom:2rem}
-.demo-timeline{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
-.demo-milestone{background:var(--bg);padding:1.2rem;border-radius:8px;min-width:100px;border:1px solid var(--line)}
-.demo-milestone .year{color:var(--gold);font-weight:700;font-size:1.1rem}
-.demo-milestone .event{color:var(--muted);font-size:.85rem;margin-top:.3rem}
-.demo-photos{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
-.demo-photo{width:80px;height:80px;border-radius:8px;background:linear-gradient(135deg,var(--gold-light),var(--gold));opacity:.5;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--bg)}
-.demo-candle{margin-top:1rem;font-size:2rem;animation:flicker 3s infinite}
+/* ---- SECTION HEADER ---- */
+.section{
+  padding:8rem 2rem;
+  position:relative;
+}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-num{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(3rem,5vw,5rem);
+  color:var(--accent);
+  opacity:.3;
+  margin-bottom:1rem;
+  line-height:1;
+}
+.section-title{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(2rem,3.5vw,3rem);
+  color:var(--text);
+  margin-bottom:1.5rem;
+  line-height:1.2;
+}
+.section-body{
+  max-width:620px;
+  color:var(--muted);
+  font-size:1.1rem;
+  line-height:1.8;
+}
 
-/* Pricing */
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:3rem}
-.pricing-card{background:var(--card);padding:2.5rem 2rem;border-radius:12px;text-align:center;border:1px solid var(--line);transition:transform .25s,border-color .25s}
-.pricing-card:hover{transform:translateY(-4px);border-color:var(--gold)}
-.pricing-card.featured{border-color:var(--gold);position:relative}
-.pricing-card.featured::before{content:'Más popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--bg);padding:.3rem 1.2rem;border-radius:20px;font-size:.8rem;font-weight:700}
-.pricing-card .plan{font-family:Georgia,serif;font-size:1.4rem;color:var(--gold);margin-bottom:.5rem}
-.pricing-card .price{font-size:2.5rem;font-weight:700;margin-bottom:.3rem}
-.pricing-card .price small{font-size:1rem;color:var(--muted);font-weight:400}
-.pricing-card .subtitle{color:var(--muted);margin-bottom:1.5rem;font-size:.95rem}
-.pricing-card ul{list-style:none;text-align:left;margin-bottom:2rem}
-.pricing-card li{padding:.5rem 0;color:var(--muted);font-size:.9rem}
-.pricing-card li::before{content:'✓ ';color:var(--gold);font-weight:700}
+/* ---- S01: What is it ---- */
+.whatis-grid{
+  display:grid;
+  grid-template-columns:1fr 1.3fr;
+  gap:4rem;
+  align-items:start;
+  margin-top:4rem;
+}
+.whatis-steps{display:flex;flex-direction:column;gap:2rem}
+.whatis-step{
+  display:flex;
+  gap:1.5rem;
+  align-items:flex-start;
+}
+.whatis-step .step-num{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:1.1rem;
+  color:var(--accent);
+  min-width:28px;
+  padding-top:2px;
+}
+.whatis-step .step-content h4{
+  font-size:1.05rem;
+  color:var(--text);
+  margin-bottom:.4rem;
+  font-weight:500;
+}
+.whatis-step .step-content p{
+  color:var(--muted);
+  font-size:.95rem;
+  line-height:1.7;
+}
 
-/* Testimonials */
-.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-top:3rem}
-.testimonial{background:var(--card);padding:2rem;border-radius:12px;border:1px solid var(--line)}
-.testimonial .quote{font-style:italic;margin-bottom:1.5rem;line-height:1.8}
-.testimonial .author{color:var(--gold);font-weight:600}
-.testimonial .author span{color:var(--muted);font-weight:400;margin-left:.3rem}
+/* ---- S02: Demo visual ---- */
+.demo-stage{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:4px;
+  overflow:hidden;
+  position:relative;
+}
+.demo-topbar{
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  padding:.9rem 1.2rem;
+  border-bottom:1px solid var(--line);
+}
+.demo-dot{width:10px;height:10px;border-radius:50%}
+.demo-dot:nth-child(1){background:#5f5f5f}
+.demo-dot:nth-child(2){background:#8a8a8a}
+.demo-dot:nth-child(3){background:#b0b0b0}
+.demo-url{
+  margin-left:auto;
+  font-size:.75rem;
+  color:var(--muted);
+  font-family:system-ui,sans-serif;
+}
+.demo-content{
+  padding:3rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  position:relative;
+}
+.demo-content::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(200,168,130,.04),transparent 70%);
+  pointer-events:none;
+}
+.demo-name{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:2.8rem;
+  color:var(--text);
+  margin-bottom:.4rem;
+  letter-spacing:-.01em;
+}
+.demo-dates{
+  font-size:1rem;
+  color:var(--muted);
+  margin-bottom:3rem;
+  letter-spacing:.05em;
+}
+.demo-timeline{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1.5rem;
+  width:100%;
+  max-width:700px;
+  margin-bottom:2.5rem;
+}
+.demo-milestone{
+  text-align:center;
+  padding:1.2rem .5rem;
+  background:var(--bg);
+  border:1px solid var(--line);
+  border-radius:2px;
+}
+.demo-milestone .year{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:1.1rem;
+  color:var(--accent);
+  margin-bottom:.3rem;
+}
+.demo-milestone .event{
+  font-size:.8rem;
+  color:var(--muted);
+  line-height:1.4;
+}
+.demo-candle{
+  width:2px;
+  height:40px;
+  background:var(--accent);
+  position:relative;
+  margin:0 auto 1rem;
+}
+.demo-candle::after{
+  content:'';
+  position:absolute;
+  top:-8px;
+  left:50%;
+  transform:translateX(-50%);
+  width:10px;
+  height:14px;
+  border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+  background:var(--accent);
+  box-shadow:0 0 20px var(--accent-glow);
+  animation:flicker 4s infinite alternate;
+}
+@keyframes flicker{
+  0%,100%{opacity:.9;transform:translateX(-50%) scale(1)}
+  50%{opacity:.6;transform:translateX(-50%) scale(.85)}
+  30%{opacity:1;transform:translateX(-50%) scale(1.1)}
+}
+.demo-photos{
+  display:flex;
+  gap:1rem;
+}
+.demo-photo{
+  width:70px;
+  height:70px;
+  border-radius:2px;
+  background:linear-gradient(135deg,rgba(200,168,130,.3),rgba(200,168,130,.08));
+  border:1px solid rgba(200,168,130,.15);
+}
 
-/* CTA */
-.cta{text-align:center;background:linear-gradient(180deg,transparent,var(--card) 50%)}
-.cta h2{margin-bottom:1rem}
-.cta p{color:var(--muted);max-width:600px;margin:0 auto 2rem;font-size:1.1rem}
+@media(max-width:768px){
+  .whatis-grid{grid-template-columns:1fr;gap:2rem}
+  .demo-content{padding:2rem 1rem}
+  .demo-timeline{grid-template-columns:repeat(2,1fr);max-width:100%}
+  .demo-name{font-size:2rem}
+}
 
-/* WhatsApp float */
-.whatsapp-float{position:fixed;bottom:2rem;right:2rem;width:60px;height:60px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .25s;z-index:100}
-.whatsapp-float:hover{transform:scale(1.1)}
+/* ---- S03: Features asymmetric ---- */
+.features-grid{
+  display:grid;
+  grid-template-columns:1.5fr 1fr 1fr;
+  grid-template-rows:auto auto;
+  gap:1px;
+  margin-top:4rem;
+  background:var(--line);
+}
+.features-grid > *{background:var(--surface)}
+.feature-card{
+  padding:3rem 2.5rem;
+  transition:background .3s;
+}
+.feature-card:hover{background:var(--bg)}
+.feature-card .feat-num{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:.85rem;
+  color:var(--accent);
+  opacity:.5;
+  margin-bottom:1.5rem;
+}
+.feature-card h4{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:1.4rem;
+  color:var(--text);
+  margin-bottom:1rem;
+  line-height:1.3;
+}
+.feature-card p{
+  color:var(--muted);
+  font-size:.9rem;
+  line-height:1.7;
+}
+.feature-card.feature-large{
+  grid-row:span 2;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.feature-card.feature-large h4{font-size:2rem}
 
-footer{text-align:center;padding:3rem 1.5rem;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+@media(max-width:768px){
+  .features-grid{grid-template-columns:1fr;gap:1px}
+  .feature-card.feature-large{grid-row:auto}
+}
 
-@media(max-width:640px){
-  .hero{min-height:70vh}
-  .demo-timeline{flex-direction:column;align-items:center}
-  section{padding:3rem 0}
+/* ---- S04: Pricing ---- */
+.pricing-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  margin-top:4rem;
+  background:var(--line);
+}
+.pricing-grid > *{background:var(--surface)}
+.pricing-card{
+  padding:3.5rem 2.5rem;
+  display:flex;
+  flex-direction:column;
+  transition:background .3s;
+}
+.pricing-card:hover{background:var(--bg)}
+.pricing-card .plan-name{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:1.3rem;
+  color:var(--text);
+  margin-bottom:.3rem;
+}
+.pricing-card .plan-desc{
+  color:var(--muted);
+  font-size:.85rem;
+  margin-bottom:2rem;
+}
+.pricing-card .price{
+  font-size:3rem;
+  color:var(--text);
+  margin-bottom:2rem;
+  letter-spacing:-.02em;
+}
+.pricing-card .price sup{font-size:1.2rem;color:var(--muted)}
+.pricing-card ul{
+  list-style:none;
+  margin-bottom:2.5rem;
+  flex:1;
+}
+.pricing-card li{
+  padding:.55rem 0;
+  color:var(--muted);
+  font-size:.9rem;
+  border-bottom:1px solid var(--line);
+}
+.pricing-card li:last-child{border-bottom:none}
+.pricing-card li::before{content:'+ ';color:var(--accent)}
+.pricing-card .btn-plan{
+  display:block;
+  text-align:center;
+  padding:.9rem;
+  text-decoration:none;
+  font-size:.9rem;
+  font-weight:500;
+  border:1px solid var(--line);
+  color:var(--text);
+  transition:all .3s;
+  border-radius:2px;
+}
+.pricing-card .btn-plan:hover{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#0a0a0f;
+}
+.pricing-card.featured .btn-plan{
+  background:var(--accent);
+  border-color:var(--accent);
+  color:#0a0a0f;
+}
+.pricing-card.featured .btn-plan:hover{background:#d4b892}
+
+@media(max-width:900px){
   .pricing-grid{grid-template-columns:1fr}
 }
+
+/* ---- S05: Testimonials editorial ---- */
+.testimonials-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;
+  margin-top:4rem;
+  background:var(--line);
+}
+.testimonials-grid > *{background:var(--surface)}
+.testimonial-card{
+  padding:3.5rem 3rem;
+}
+.testimonial-card .quote-mark{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:4rem;
+  line-height:1;
+  color:var(--accent);
+  opacity:.25;
+  margin-bottom:1rem;
+}
+.testimonial-card .quote-text{
+  font-size:1.05rem;
+  line-height:1.8;
+  color:var(--text);
+  margin-bottom:2rem;
+}
+.testimonial-card .author{
+  font-size:.9rem;
+  color:var(--accent);
+}
+.testimonial-card .author span{
+  color:var(--muted);
+  font-size:.85rem;
+}
+@media(max-width:768px){
+  .testimonials-grid{grid-template-columns:1fr}
+  .testimonial-card{padding:2.5rem 2rem}
+}
+
+/* ---- FOOTER ---- */
+.footer{
+  padding:4rem 2rem;
+  border-top:1px solid var(--line);
+}
+.footer-inner{
+  max-width:1200px;
+  margin:0 auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:1rem;
+}
+.footer-brand{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:1rem;
+  color:var(--text);
+}
+.footer-info{
+  color:var(--muted);
+  font-size:.8rem;
+}
+
+/* ---- Divider ---- */
+.divider{height:1px;background:var(--line);margin:0 2rem}
+@media(min-width:1200px){.divider{margin:0 calc((100vw - 1200px)/2 + 2rem)}}
+
+/* CTA section */
+.cta-section{text-align:center;padding:8rem 2rem}
+.cta-section .cta-text{
+  font-family:Georgia,'Times New Roman',serif;
+  font-size:clamp(2rem,3.5vw,2.8rem);
+  color:var(--text);
+  margin-bottom:2.5rem;
+  line-height:1.3;
+}
+.cta-section .cta-sub{
+  color:var(--muted);
+  font-size:1.1rem;
+  max-width:500px;
+  margin:0 auto 3rem;
+}
+
+/* Surface variant */
+.surface{background:var(--surface)}
 </style>
 </head>
 <body>
 
-<!-- Hero -->
+<!-- HERO -->
 <section class="hero">
-  <div class="hero-content container">
-    <div class="hero-candle">🕯️</div>
-    <h1>Un lugar donde su memoria<br>vive para siempre</h1>
-    <p>Un espacio digital privado para honrar a quien ya no está. Con fotos, recuerdos, mensajes de quienes lo amaron y una vela que nunca se apaga.</p>
-    <div class="hero-buttons">
-      <a href="#precios" class="btn btn-primary">Crear mi homenaje</a>
-      <a href="#demo" class="btn btn-outline">Ver ejemplo</a>
+  <div class="hero-inner">
+    <h1>Un lugar donde<br>su memoria vive</h1>
+    <p class="subtitle">Un espacio digital privado y permanente para honrar a quien ya no esta. Con su historia, sus fotos y los mensajes de quienes la amaron.</p>
+    <a href="#precios" class="hero-cta">Crear un homenaje <span class="arrow">+</span></a>
+    <div class="hero-line"></div>
+  </div>
+</section>
+
+<!-- 01: Que es -->
+<section class="section surface fade-up">
+  <div class="section-inner">
+    <div class="section-num">01</div>
+    <h2 class="section-title">Que es<br>Tu Homenaje</h2>
+    <div class="whatis-grid">
+      <p class="section-body">Una pagina web privada dedicada a la memoria de esa persona especial. No es una red social ni un perfil generico. Es un lugar intimo que construimos juntos, con respeto y sensibilidad.</p>
+      <div class="whatis-steps">
+        <div class="whatis-step">
+          <div class="step-num serif">I</div>
+          <div class="step-content">
+            <h4>Recopilamos su historia</h4>
+            <p>Tu nos envias las fotos, las fechas importantes y las anecdotas. Nosotros las organizamos en una linea de tiempo emotiva.</p>
+          </div>
+        </div>
+        <div class="whatis-step">
+          <div class="step-num serif">II</div>
+          <div class="step-content">
+            <h4>Disenamos su pagina</h4>
+            <p>Creamos un espacio visual unico, con su nombre, sus colores favoritos, su musica. Cada detalle pensado para reflejar quien fue.</p>
+          </div>
+        </div>
+        <div class="whatis-step">
+          <div class="step-num serif">III</div>
+          <div class="step-content">
+            <h4>Compartes con la familia</h4>
+            <p>Tu decides quien puede verlo. La familia puede dejar mensajes, anecdotas y recuerdos que permanecen para siempre.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ¿Qué es? -->
-<section class="what-is">
-  <div class="container">
-    <h2>¿Qué es Tu Homenaje?</h2>
-    <p style="color:var(--muted);max-width:700px">Una página web privada y permanente dedicada a la memoria de esa persona especial. No es una red social, no es un perfil genérico. Es un lugar íntimo que construimos juntos, con sus fotos, su historia, su música favorita y los mensajes de quienes la amaron.</p>
-    <div class="what-is-grid">
-      <div class="what-is-card">
-        <div class="icon">📖</div>
-        <h3>Su historia de vida</h3>
-        <p>Una línea de tiempo con los momentos más importantes: su nacimiento, su infancia, sus logros, su familia.</p>
-      </div>
-      <div class="what-is-card">
-        <div class="icon">🖼️</div>
-        <h3>Galería de recuerdos</h3>
-        <p>Todas sus fotos en un solo lugar. Organizadas por etapas de su vida, con espacio para que la familia agregue más.</p>
-      </div>
-      <div class="what-is-card">
-        <div class="icon">💌</div>
-        <h3>Mensajes de quienes lo aman</h3>
-        <p>Familiares y amigos pueden dejar mensajes, anécdotas y recuerdos que permanecen para siempre.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Características -->
-<section>
-  <div class="container">
-    <h2 style="text-align:center">Todo lo que incluye</h2>
-    <div class="features-grid">
-      <div class="feature"><span class="icon">📅</span><h3>Línea de tiempo</h3><p>Cada etapa de su vida en orden cronológico</p></div>
-      <div class="feature"><span class="icon">🖼️</span><h3>Galería de fotos</h3><p>Digitalizamos y organizamos todas sus fotos</p></div>
-      <div class="feature"><span class="icon">💬</span><h3>Muro de mensajes</h3><p>Familiares escriben recuerdos y anécdotas</p></div>
-      <div class="feature"><span class="icon">🎵</span><h3>Música</h3><p>Su canción favorita suena al entrar a la página</p></div>
-      <div class="feature"><span class="icon">🕯️</span><h3>Vela virtual</h3><p>Una vela que siempre está encendida en su memoria</p></div>
-      <div class="feature"><span class="icon">🔒</span><h3>Privado y seguro</h3><p>Tú decides quién puede verlo. No es público.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- Demo -->
-<section id="demo" class="what-is">
-  <div class="container">
-    <h2 style="text-align:center">Así se ve tu homenaje</h2>
-    <div class="demo-preview">
-      <div class="demo-header">
+<!-- 02: Demo -->
+<section class="section fade-up">
+  <div class="section-inner">
+    <div class="section-num">02</div>
+    <h2 class="section-title">Asi se ve</h2>
+    <p class="section-body">Un homenaje vivo, que la familia puede visitar desde cualquier lugar del mundo.</p>
+    <div class="demo-stage" style="margin-top:3rem">
+      <div class="demo-topbar">
         <div class="demo-dot"></div><div class="demo-dot"></div><div class="demo-dot"></div>
         <span class="demo-url">tuhomenaje.cl/maria-elena</span>
       </div>
-      <div class="demo-body">
-        <div class="demo-name">María Elena González</div>
-        <div class="demo-dates">1943 — 2024</div>
+      <div class="demo-content">
+        <div class="demo-name">Maria Elena Gonzalez</div>
+        <div class="demo-dates">1943 &mdash; 2024</div>
         <div class="demo-timeline">
-          <div class="demo-milestone"><div class="year">1943</div><div class="event">Nació en Valparaíso</div></div>
-          <div class="demo-milestone"><div class="year">1968</div><div class="event">Se casó con Roberto</div></div>
-          <div class="demo-milestone"><div class="year">1970</div><div class="event">Nació su hija Carmen</div></div>
-          <div class="demo-milestone"><div class="year">2005</div><div class="event">Conoció a sus nietos</div></div>
+          <div class="demo-milestone">
+            <div class="year">1943</div>
+            <div class="event">Nacio en Valparaiso</div>
+          </div>
+          <div class="demo-milestone">
+            <div class="year">1968</div>
+            <div class="event">Se caso con Roberto</div>
+          </div>
+          <div class="demo-milestone">
+            <div class="year">1970</div>
+            <div class="event">Nacio su hija Carmen</div>
+          </div>
+          <div class="demo-milestone">
+            <div class="year">2005</div>
+            <div class="event">Conocio a sus nietos</div>
+          </div>
         </div>
+        <div class="demo-candle"></div>
         <div class="demo-photos">
-          <div class="demo-photo">👶</div>
-          <div class="demo-photo">💒</div>
-          <div class="demo-photo">👨‍👩‍👧</div>
-          <div class="demo-photo">👵</div>
+          <div class="demo-photo"></div>
+          <div class="demo-photo"></div>
+          <div class="demo-photo"></div>
+          <div class="demo-photo"></div>
         </div>
-        <div class="demo-candle">🕯️</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Precios -->
-<section id="precios">
-  <div class="container">
-    <h2 style="text-align:center">Planes</h2>
-    <p style="text-align:center;color:var(--muted);margin-bottom:2rem">Pago único. Sin suscripciones. Tu homenaje es para siempre.</p>
+<!-- 03: Features -->
+<section class="section surface fade-up">
+  <div class="section-inner">
+    <div class="section-num">03</div>
+    <h2 class="section-title">Cada detalle<br>importa</h2>
+    <div class="features-grid">
+      <div class="feature-card feature-large">
+        <div class="feat-num serif">/ 01</div>
+        <h4>Linea de tiempo<br>de su vida</h4>
+        <p>Cada etapa importante en orden cronologico. Su infancia, sus logros, su familia. Una narrativa visual que cuenta quien fue.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-num serif">/ 02</div>
+        <h4>Galeria de recuerdos</h4>
+        <p>Digitalizamos y organizamos sus fotos. Organizadas por etapas, con espacio para que la familia sume nuevas.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-num serif">/ 03</div>
+        <h4>Muro de mensajes</h4>
+        <p>Familiares y amigos dejan sus palabras. Anécdotas, recuerdos, despedidas. Un espacio que crece con el tiempo.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-num serif">/ 04</div>
+        <h4>Musica que la define</h4>
+        <p>Su cancion favorita suena al abrir la pagina. Un detalle que transporta a quienes la visitan.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feat-num serif">/ 05</div>
+        <h4>Vela siempre encendida</h4>
+        <p>Una vela virtual que nunca se apaga. Un simbolo de que su memoria sigue viva en quienes la amaron.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 04: Pricing -->
+<section class="section fade-up" id="precios">
+  <div class="section-inner">
+    <div class="section-num">04</div>
+    <h2 class="section-title">Planes</h2>
+    <p class="section-body">Pago unico. Sin suscripciones. Tu homenaje queda para siempre.</p>
     <div class="pricing-grid">
       <div class="pricing-card">
-        <div class="plan">Básico</div>
-        <div class="price">$199 <small>USD</small></div>
-        <div class="subtitle">Pago único</div>
+        <div class="plan-name">Basico</div>
+        <div class="plan-desc">Lo esencial</div>
+        <div class="price"><sup>$</sup>199</div>
         <ul>
-          <li>Línea de tiempo de vida</li>
+          <li>Linea de tiempo</li>
           <li>Hasta 30 fotos</li>
           <li>5 hitos principales</li>
           <li>Vela virtual</li>
           <li>Enlace privado</li>
-          <li>Entrega en 5 días</li>
+          <li>Entrega en 5 dias</li>
         </ul>
-        <a href="#" class="btn btn-outline">Elegir Básico</a>
+        <a href="#" class="btn-plan">Elegir Basico</a>
       </div>
       <div class="pricing-card featured">
-        <div class="plan">Completo</div>
-        <div class="price">$399 <small>USD</small></div>
-        <div class="subtitle">Pago único</div>
+        <div class="plan-name">Completo</div>
+        <div class="plan-desc">El mas elegido</div>
+        <div class="price"><sup>$</sup>399</div>
         <ul>
-          <li>Todo lo del plan Básico</li>
+          <li>Todo lo del plan Basico</li>
           <li>Hasta 80 fotos</li>
-          <li>20 hitos con descripciones</li>
-          <li>Muro de mensajes familiares</li>
-          <li>Música personalizada</li>
-          <li>Galería por etapas de vida</li>
-          <li>Entrega en 7 días</li>
+          <li>20 hitos con descripcion</li>
+          <li>Muro de mensajes</li>
+          <li>Musica personalizada</li>
+          <li>Galeria por etapas</li>
+          <li>Entrega en 7 dias</li>
         </ul>
-        <a href="#" class="btn btn-primary">Elegir Completo</a>
+        <a href="#" class="btn-plan">Elegir Completo</a>
       </div>
       <div class="pricing-card">
-        <div class="plan">Premium</div>
-        <div class="price">$599 <small>USD</small></div>
-        <div class="subtitle">Pago único</div>
+        <div class="plan-name">Premium</div>
+        <div class="plan-desc">Todo incluido</div>
+        <div class="price"><sup>$</sup>599</div>
         <ul>
           <li>Todo lo del plan Completo</li>
           <li>Fotos ilimitadas</li>
-          <li>Digitalización de fotos físicas</li>
-          <li>Video conmemorativo (3 min)</li>
+          <li>Digitalizacion de fotos fisicas</li>
+          <li>Video conmemorativo</li>
           <li>Dominio personalizado</li>
           <li>Soporte prioritario</li>
-          <li>Entrega en 10 días</li>
+          <li>Entrega en 10 dias</li>
         </ul>
-        <a href="#" class="btn btn-outline">Elegir Premium</a>
+        <a href="#" class="btn-plan">Elegir Premium</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Testimonios -->
-<section class="what-is">
-  <div class="container">
-    <h2 style="text-align:center">Familias que ya crearon su homenaje</h2>
+<!-- 05: Testimonios -->
+<section class="section surface fade-up">
+  <div class="section-inner">
+    <div class="section-num">05</div>
+    <h2 class="section-title">Familias que ya<br>crearon su homenaje</h2>
     <div class="testimonials-grid">
-      <div class="testimonial">
-        <div class="quote">"Cuando mi mamá falleció, no sabía cómo procesarlo. La página que hicimos juntos me ayudó a honrarla y ahora mis hijos pueden conocer a su abuela a través de sus fotos y su historia."</div>
-        <div class="author">Carmen P.<span>— Santiago, 52 años</span></div>
+      <div class="testimonial-card">
+        <div class="quote-mark serif">&ldquo;</div>
+        <p class="quote-text">Cuando mi mama fallecio, no sabia como procesarlo. La pagina que hicimos juntos me ayudo a honrarla y ahora mis hijos pueden conocer a su abuela a traves de sus fotos y su historia.</p>
+        <p class="author">Carmen P. <span>&mdash; Santiago, 52 anos</span></p>
       </div>
-      <div class="testimonial">
-        <div class="quote">"Mi papá era músico. Poder entrar a su homenaje, escuchar sus canciones y ver sus fotos me hace sentir que todavía está conmigo. Mis hermanos en el extranjero también lo visitan."</div>
-        <div class="author">Roberto M.<span>— Buenos Aires, 48 años</span></div>
+      <div class="testimonial-card">
+        <div class="quote-mark serif">&ldquo;</div>
+        <p class="quote-text">Mi papa era musico. Poder entrar a su homenaje, escuchar sus canciones y ver sus fotos me hace sentir que todavia esta conmigo. Mis hermanos en el extranjero tambien lo visitan.</p>
+        <p class="author">Roberto M. <span>&mdash; Buenos Aires, 48 anos</span></p>
       </div>
-      <div class="testimonial">
-        <div class="quote">"No soy muy tecnológica, pero Luis me explicó todo con paciencia. Ahora tengo un lugar donde visitar a mi esposo cuando lo extraño. Se lo he mostrado a todas mis amigas."</div>
-        <div class="author">Elena R.<span>— Madrid, 67 años</span></div>
+      <div class="testimonial-card">
+        <div class="quote-mark serif">&ldquo;</div>
+        <p class="quote-text">No soy muy tecnologico, pero Luis me explico todo con paciencia. Ahora tengo un lugar donde visitar a mi esposa cuando la extrano. Se lo he mostrado a todos mis amigos.</p>
+        <p class="author">Elena R. <span>&mdash; Madrid, 67 anos</span></p>
+      </div>
+      <div class="testimonial-card">
+        <div class="quote-mark serif">&ldquo;</div>
+        <p class="quote-text">Perdimos a mi hermano muy joven. El homenaje que creamos nos permitio reunir fotos que estaban dispersas entre toda la familia. Ahora todos tenemos un solo lugar para recordarlo.</p>
+        <p class="author">Diego S. <span>&mdash; Lima, 39 anos</span></p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta">
-  <div class="container">
-    <h2>¿Quieres crear un homenaje para alguien especial?</h2>
-    <p>Cuéntanos quién es y qué te gustaría incluir. Te guiamos en cada paso, sin prisas, con respeto y sensibilidad.</p>
-    <div class="hero-buttons">
-      <a href="#" class="btn btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem">Quiero crear mi homenaje</a>
-    </div>
-    <p style="margin-top:1.5rem;color:var(--muted);font-size:.9rem">O escríbenos por WhatsApp para conversar sin compromiso</p>
-  </div>
+<section class="cta-section fade-up">
+  <p class="cta-text">Quieres crear un homenaje<br>para alguien especial?</p>
+  <p class="cta-sub">Cuentanos quien es y que te gustaria incluir. Te guiamos en cada paso, con respeto y sensibilidad.</p>
+  <a href="#" class="hero-cta">Empezar ahora <span class="arrow">+</span></a>
 </section>
 
-<footer>
-  <p>Tu Homenaje · Tallercivil SpA · Coyhaique, Chile · contacto@tallercivilspa.cl</p>
-  <p style="margin-top:.5rem">Hecho con respeto y cuidado. Porque cada vida merece ser recordada.</p>
+<div class="divider"></div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">Tu Homenaje</div>
+    <div class="footer-info">Tallercivil SpA &middot; Coyhaique, Chile &middot; contacto@tallercivilspa.cl</div>
+  </div>
 </footer>
 
-<a href="#" class="whatsapp-float" title="Escríbenos por WhatsApp">💬</a>
-
+<script>
+(function(){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}
+    })
+  },{threshold:.15});
+  document.querySelectorAll('.fade-up').forEach(function(el){obs.observe(el)})
+})();
+</script>
 </body>
 </html>
