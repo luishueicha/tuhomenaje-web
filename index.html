@@ -624,7 +624,7 @@ h1,h2,h3,h4{font-weight:400}
           <li>Enlace privado</li>
           <li>Entrega en 5 dias</li>
         </ul>
-        <a href="#" class="btn-plan">Elegir Basico</a>
+        <div class="btn-plan" data-paypal="199" data-plan="basico" data-product="tuhomenaje" style="min-height:48px;display:inline-block;width:100%"></div>
       </div>
       <div class="pricing-card featured">
         <div class="plan-name">Completo</div>
@@ -639,7 +639,7 @@ h1,h2,h3,h4{font-weight:400}
           <li>Galeria por etapas</li>
           <li>Entrega en 7 dias</li>
         </ul>
-        <a href="#" class="btn-plan">Elegir Completo</a>
+        <div class="btn-plan" data-paypal="399" data-plan="completo" data-product="tuhomenaje" style="min-height:48px;display:inline-block;width:100%"></div>
       </div>
       <div class="pricing-card">
         <div class="plan-name">Premium</div>
@@ -654,7 +654,7 @@ h1,h2,h3,h4{font-weight:400}
           <li>Soporte prioritario</li>
           <li>Entrega en 10 dias</li>
         </ul>
-        <a href="#" class="btn-plan">Elegir Premium</a>
+        <div class="btn-plan" data-paypal="599" data-plan="premium" data-product="tuhomenaje" style="min-height:48px;display:inline-block;width:100%"></div>
       </div>
     </div>
   </div>
@@ -716,5 +716,53 @@ h1,h2,h3,h4{font-weight:400}
   document.querySelectorAll('.fade-up').forEach(function(el){obs.observe(el)})
 })();
 </script>
+
+<!-- PayPal SDK -->
+<script src="https://www.paypal.com/sdk/js?client-id=PAYPAL_CLIENT_ID&currency=USD"></script>
+<script>
+// PayPal Smart Buttons — reemplazar PAYPAL_CLIENT_ID con el real
+document.addEventListener('DOMContentLoaded', () => {
+    const paypalClientId = new URLSearchParams(window.location.search).get('pp') || 'PAYPAL_CLIENT_ID';
+    
+    document.querySelectorAll('[data-paypal]').forEach(el => {
+        const amount = el.dataset.paypal;
+        const plan = el.dataset.plan || '';
+        const product = el.dataset.product || '';
+        
+        paypal.Buttons({
+            createOrder: (data, actions) => {
+                return actions.order.create({
+                    purchase_units: [{
+                        description: `${product} — ${plan}`,
+                        amount: { value: amount }
+                    }]
+                });
+            },
+            onApprove: (data, actions) => {
+                return actions.order.capture().then(details => {
+                    el.innerHTML = 'Pago recibido — Te contactaremos pronto';
+                    el.className += ' paid';
+                    fetch('/api/pedido', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({
+                            producto: product,
+                            plan: plan,
+                            monto_usd: parseFloat(amount),
+                            paypal_order_id: data.orderID,
+                            cliente: details.payer.name?.given_name || ''
+                        })
+                    }).catch(() => {});
+                });
+            },
+            onError: err => {
+                console.error('PayPal error:', err);
+                el.innerHTML = 'Error — Intenta de nuevo o escríbenos';
+            }
+        }).render(el);
+    });
+});
+</script>
+
 </body>
 </html>
