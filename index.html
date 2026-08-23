@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tu Homenaje — Un lugar donde su memoria vive para siempre</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#1a1a2e;--card:#16213e;--gold:#d4a574;--gold-light:#e8c9a0;--text:#e9ecf1;--muted:#9aa3b2;--line:#2a2a4a}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.7}
+h1,h2,h3{font-family:Georgia,'Times New Roman',serif;font-weight:400;color:var(--gold)}
+h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.2}
+h2{font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.5rem}
+h3{font-size:1.2rem;color:var(--gold-light)}
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+section{padding:5rem 0}
+.btn{display:inline-block;padding:.9rem 2rem;border-radius:8px;font-size:1rem;font-weight:600;text-decoration:none;transition:all .25s;cursor:pointer;border:none}
+.btn-primary{background:var(--gold);color:var(--bg)}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--gold);border:2px solid var(--gold)}
+.btn-outline:hover{background:var(--gold);color:var(--bg)}
+
+/* Hero */
+.hero{min-height:90vh;display:flex;align-items:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 0%,rgba(212,165,116,.08) 0%,transparent 70%)}
+.hero-content{position:relative;z-index:1;text-align:center}
+.hero h1{margin-bottom:1.2rem}
+.hero p{font-size:1.3rem;color:var(--muted);max-width:600px;margin:0 auto 2.5rem}
+.hero-candle{font-size:4rem;margin-bottom:2rem;animation:flicker 3s infinite}
+@keyframes flicker{0%,100%{opacity:1}50%{opacity:.7}30%,70%{opacity:.85}}
+.hero-buttons{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+
+/* Secciones */
+.what-is{background:var(--card)}
+.what-is-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:3rem}
+.what-is-card{background:var(--bg);padding:2rem;border-radius:12px;border:1px solid var(--line)}
+.what-is-card .icon{font-size:2.5rem;margin-bottom:1rem}
+.what-is-card h3{margin-bottom:.8rem}
+
+/* Features */
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:2rem;margin-top:3rem}
+.feature{text-align:center;padding:2rem}
+.feature .icon{font-size:3rem;margin-bottom:1rem;display:block}
+.feature h3{font-size:1.1rem;margin-bottom:.5rem}
+.feature p{color:var(--muted);font-size:.95rem}
+
+/* Demo preview */
+.demo-preview{background:var(--card);border-radius:16px;overflow:hidden;border:1px solid var(--line);margin-top:3rem}
+.demo-header{background:var(--bg);padding:1.2rem 2rem;display:flex;align-items:center;gap:1rem;border-bottom:1px solid var(--line)}
+.demo-dot{width:12px;height:12px;border-radius:50%}
+.demo-dot:nth-child(1){background:#ff5f56}.demo-dot:nth-child(2){background:#ffbd2e}.demo-dot:nth-child(3){background:#27c93f}
+.demo-url{color:var(--muted);font-size:.85rem;margin-left:auto}
+.demo-body{padding:3rem 2rem;text-align:center}
+.demo-name{font-family:Georgia,serif;font-size:2.5rem;color:var(--gold);margin-bottom:.5rem}
+.demo-dates{color:var(--muted);font-size:1.1rem;margin-bottom:2rem}
+.demo-timeline{display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;margin-bottom:2rem}
+.demo-milestone{background:var(--bg);padding:1.2rem;border-radius:8px;min-width:100px;border:1px solid var(--line)}
+.demo-milestone .year{color:var(--gold);font-weight:700;font-size:1.1rem}
+.demo-milestone .event{color:var(--muted);font-size:.85rem;margin-top:.3rem}
+.demo-photos{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.demo-photo{width:80px;height:80px;border-radius:8px;background:linear-gradient(135deg,var(--gold-light),var(--gold));opacity:.5;display:flex;align-items:center;justify-content:center;font-size:2rem;color:var(--bg)}
+.demo-candle{margin-top:1rem;font-size:2rem;animation:flicker 3s infinite}
+
+/* Pricing */
+.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem;margin-top:3rem}
+.pricing-card{background:var(--card);padding:2.5rem 2rem;border-radius:12px;text-align:center;border:1px solid var(--line);transition:transform .25s,border-color .25s}
+.pricing-card:hover{transform:translateY(-4px);border-color:var(--gold)}
+.pricing-card.featured{border-color:var(--gold);position:relative}
+.pricing-card.featured::before{content:'Más popular';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--bg);padding:.3rem 1.2rem;border-radius:20px;font-size:.8rem;font-weight:700}
+.pricing-card .plan{font-family:Georgia,serif;font-size:1.4rem;color:var(--gold);margin-bottom:.5rem}
+.pricing-card .price{font-size:2.5rem;font-weight:700;margin-bottom:.3rem}
+.pricing-card .price small{font-size:1rem;color:var(--muted);font-weight:400}
+.pricing-card .subtitle{color:var(--muted);margin-bottom:1.5rem;font-size:.95rem}
+.pricing-card ul{list-style:none;text-align:left;margin-bottom:2rem}
+.pricing-card li{padding:.5rem 0;color:var(--muted);font-size:.9rem}
+.pricing-card li::before{content:'✓ ';color:var(--gold);font-weight:700}
+
+/* Testimonials */
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;margin-top:3rem}
+.testimonial{background:var(--card);padding:2rem;border-radius:12px;border:1px solid var(--line)}
+.testimonial .quote{font-style:italic;margin-bottom:1.5rem;line-height:1.8}
+.testimonial .author{color:var(--gold);font-weight:600}
+.testimonial .author span{color:var(--muted);font-weight:400;margin-left:.3rem}
+
+/* CTA */
+.cta{text-align:center;background:linear-gradient(180deg,transparent,var(--card) 50%)}
+.cta h2{margin-bottom:1rem}
+.cta p{color:var(--muted);max-width:600px;margin:0 auto 2rem;font-size:1.1rem}
+
+/* WhatsApp float */
+.whatsapp-float{position:fixed;bottom:2rem;right:2rem;width:60px;height:60px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2rem;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .25s;z-index:100}
+.whatsapp-float:hover{transform:scale(1.1)}
+
+footer{text-align:center;padding:3rem 1.5rem;color:var(--muted);font-size:.9rem;border-top:1px solid var(--line)}
+
+@media(max-width:640px){
+  .hero{min-height:70vh}
+  .demo-timeline{flex-direction:column;align-items:center}
+  section{padding:3rem 0}
+  .pricing-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-content container">
+    <div class="hero-candle">🕯️</div>
+    <h1>Un lugar donde su memoria<br>vive para siempre</h1>
+    <p>Un espacio digital privado para honrar a quien ya no está. Con fotos, recuerdos, mensajes de quienes lo amaron y una vela que nunca se apaga.</p>
+    <div class="hero-buttons">
+      <a href="#precios" class="btn btn-primary">Crear mi homenaje</a>
+      <a href="#demo" class="btn btn-outline">Ver ejemplo</a>
+    </div>
+  </div>
+</section>
+
+<!-- ¿Qué es? -->
+<section class="what-is">
+  <div class="container">
+    <h2>¿Qué es Tu Homenaje?</h2>
+    <p style="color:var(--muted);max-width:700px">Una página web privada y permanente dedicada a la memoria de esa persona especial. No es una red social, no es un perfil genérico. Es un lugar íntimo que construimos juntos, con sus fotos, su historia, su música favorita y los mensajes de quienes la amaron.</p>
+    <div class="what-is-grid">
+      <div class="what-is-card">
+        <div class="icon">📖</div>
+        <h3>Su historia de vida</h3>
+        <p>Una línea de tiempo con los momentos más importantes: su nacimiento, su infancia, sus logros, su familia.</p>
+      </div>
+      <div class="what-is-card">
+        <div class="icon">🖼️</div>
+        <h3>Galería de recuerdos</h3>
+        <p>Todas sus fotos en un solo lugar. Organizadas por etapas de su vida, con espacio para que la familia agregue más.</p>
+      </div>
+      <div class="what-is-card">
+        <div class="icon">💌</div>
+        <h3>Mensajes de quienes lo aman</h3>
+        <p>Familiares y amigos pueden dejar mensajes, anécdotas y recuerdos que permanecen para siempre.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Características -->
+<section>
+  <div class="container">
+    <h2 style="text-align:center">Todo lo que incluye</h2>
+    <div class="features-grid">
+      <div class="feature"><span class="icon">📅</span><h3>Línea de tiempo</h3><p>Cada etapa de su vida en orden cronológico</p></div>
+      <div class="feature"><span class="icon">🖼️</span><h3>Galería de fotos</h3><p>Digitalizamos y organizamos todas sus fotos</p></div>
+      <div class="feature"><span class="icon">💬</span><h3>Muro de mensajes</h3><p>Familiares escriben recuerdos y anécdotas</p></div>
+      <div class="feature"><span class="icon">🎵</span><h3>Música</h3><p>Su canción favorita suena al entrar a la página</p></div>
+      <div class="feature"><span class="icon">🕯️</span><h3>Vela virtual</h3><p>Una vela que siempre está encendida en su memoria</p></div>
+      <div class="feature"><span class="icon">🔒</span><h3>Privado y seguro</h3><p>Tú decides quién puede verlo. No es público.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Demo -->
+<section id="demo" class="what-is">
+  <div class="container">
+    <h2 style="text-align:center">Así se ve tu homenaje</h2>
+    <div class="demo-preview">
+      <div class="demo-header">
+        <div class="demo-dot"></div><div class="demo-dot"></div><div class="demo-dot"></div>
+        <span class="demo-url">tuhomenaje.cl/maria-elena</span>
+      </div>
+      <div class="demo-body">
+        <div class="demo-name">María Elena González</div>
+        <div class="demo-dates">1943 — 2024</div>
+        <div class="demo-timeline">
+          <div class="demo-milestone"><div class="year">1943</div><div class="event">Nació en Valparaíso</div></div>
+          <div class="demo-milestone"><div class="year">1968</div><div class="event">Se casó con Roberto</div></div>
+          <div class="demo-milestone"><div class="year">1970</div><div class="event">Nació su hija Carmen</div></div>
+          <div class="demo-milestone"><div class="year">2005</div><div class="event">Conoció a sus nietos</div></div>
+        </div>
+        <div class="demo-photos">
+          <div class="demo-photo">👶</div>
+          <div class="demo-photo">💒</div>
+          <div class="demo-photo">👨‍👩‍👧</div>
+          <div class="demo-photo">👵</div>
+        </div>
+        <div class="demo-candle">🕯️</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Precios -->
+<section id="precios">
+  <div class="container">
+    <h2 style="text-align:center">Planes</h2>
+    <p style="text-align:center;color:var(--muted);margin-bottom:2rem">Pago único. Sin suscripciones. Tu homenaje es para siempre.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="plan">Básico</div>
+        <div class="price">$199 <small>USD</small></div>
+        <div class="subtitle">Pago único</div>
+        <ul>
+          <li>Línea de tiempo de vida</li>
+          <li>Hasta 30 fotos</li>
+          <li>5 hitos principales</li>
+          <li>Vela virtual</li>
+          <li>Enlace privado</li>
+          <li>Entrega en 5 días</li>
+        </ul>
+        <a href="#" class="btn btn-outline">Elegir Básico</a>
+      </div>
+      <div class="pricing-card featured">
+        <div class="plan">Completo</div>
+        <div class="price">$399 <small>USD</small></div>
+        <div class="subtitle">Pago único</div>
+        <ul>
+          <li>Todo lo del plan Básico</li>
+          <li>Hasta 80 fotos</li>
+          <li>20 hitos con descripciones</li>
+          <li>Muro de mensajes familiares</li>
+          <li>Música personalizada</li>
+          <li>Galería por etapas de vida</li>
+          <li>Entrega en 7 días</li>
+        </ul>
+        <a href="#" class="btn btn-primary">Elegir Completo</a>
+      </div>
+      <div class="pricing-card">
+        <div class="plan">Premium</div>
+        <div class="price">$599 <small>USD</small></div>
+        <div class="subtitle">Pago único</div>
+        <ul>
+          <li>Todo lo del plan Completo</li>
+          <li>Fotos ilimitadas</li>
+          <li>Digitalización de fotos físicas</li>
+          <li>Video conmemorativo (3 min)</li>
+          <li>Dominio personalizado</li>
+          <li>Soporte prioritario</li>
+          <li>Entrega en 10 días</li>
+        </ul>
+        <a href="#" class="btn btn-outline">Elegir Premium</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Testimonios -->
+<section class="what-is">
+  <div class="container">
+    <h2 style="text-align:center">Familias que ya crearon su homenaje</h2>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="quote">"Cuando mi mamá falleció, no sabía cómo procesarlo. La página que hicimos juntos me ayudó a honrarla y ahora mis hijos pueden conocer a su abuela a través de sus fotos y su historia."</div>
+        <div class="author">Carmen P.<span>— Santiago, 52 años</span></div>
+      </div>
+      <div class="testimonial">
+        <div class="quote">"Mi papá era músico. Poder entrar a su homenaje, escuchar sus canciones y ver sus fotos me hace sentir que todavía está conmigo. Mis hermanos en el extranjero también lo visitan."</div>
+        <div class="author">Roberto M.<span>— Buenos Aires, 48 años</span></div>
+      </div>
+      <div class="testimonial">
+        <div class="quote">"No soy muy tecnológica, pero Luis me explicó todo con paciencia. Ahora tengo un lugar donde visitar a mi esposo cuando lo extraño. Se lo he mostrado a todas mis amigas."</div>
+        <div class="author">Elena R.<span>— Madrid, 67 años</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="container">
+    <h2>¿Quieres crear un homenaje para alguien especial?</h2>
+    <p>Cuéntanos quién es y qué te gustaría incluir. Te guiamos en cada paso, sin prisas, con respeto y sensibilidad.</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn btn-primary" style="font-size:1.1rem;padding:1rem 2.5rem">Quiero crear mi homenaje</a>
+    </div>
+    <p style="margin-top:1.5rem;color:var(--muted);font-size:.9rem">O escríbenos por WhatsApp para conversar sin compromiso</p>
+  </div>
+</section>
+
+<footer>
+  <p>Tu Homenaje · Tallercivil SpA · Coyhaique, Chile · contacto@tallercivilspa.cl</p>
+  <p style="margin-top:.5rem">Hecho con respeto y cuidado. Porque cada vida merece ser recordada.</p>
+</footer>
+
+<a href="#" class="whatsapp-float" title="Escríbenos por WhatsApp">💬</a>
+
+</body>
+</html>
